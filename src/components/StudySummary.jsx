@@ -1,9 +1,7 @@
 // 필터링된 항목 수 통계 (useMemo 계산값 표시)
 "use client";
 
-// 미션 1: 전달받은 데이터를 바탕으로 화면에 전체 개수 및 요약 데이터를 출력합니다.
-export default function StudySummary({ summary }) {
-  // 전체 항목(total), 표시 항목(visible), 즐겨찾기(favorite) 데이터를 받아옵니다.
+export default function StudySummary({ summary, renderCount }) {
   const { total = 0, visible = 0, favorite = 0 } = summary || {};
 
   return (
@@ -21,7 +19,6 @@ export default function StudySummary({ summary }) {
           border: "1px solid #f1f5f9",
         }}
       >
-        {/* [미션 1 핵심] 전체 학습 데이터 배열의 기본 개수(length)를 화면에 렌더링합니다. */}
         <div>
           <strong>전체 항목:</strong> {total}개
         </div>
@@ -34,88 +31,9 @@ export default function StudySummary({ summary }) {
           <strong>즐겨찾기:</strong> {favorite}개
         </div>
 
-        {/* 미션 1 단계 외의 데이터(미션 6 렌더링 횟수 등)는 숨김 처리합니다. */}
-        <div style={{ display: "none" }}>렌더링 횟수 영역</div>
-      </div>
-    </div>
-  );
-}
-
-export default function StudySummary({ summary }) {
-
-  const { favorite = 0 } = summary || {};
-
-  return (
-    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-      <div
-        style={{
-          backgroundColor: "#f8fafc",
-          padding: "12px 20px",
-          borderRadius: "8px",
-          fontSize: "13px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          color: "#334155",
-          border: "1px solid #f1f5f9",
-        }}
-      >
-        {/* 미션 2 이외의 기본 정보는 생략하거나 숨김 처리합니다. */}
-        <div style={{ display: "none" }}>전체 및 현재 표시 항목</div>
-
-        {/* 
-          [미션 2 핵심 UI]
-          - 사용자가 각 아이템의 '☆ 즐겨찾기' 버튼을 누를 때마다 
-            실시간으로 카운트가 변하는 것을 보여주는 종착지입니다.
-        */}
         <div>
-          <strong>즐겨찾기:</strong> {favorite}개
+          <strong>App 렌더링 횟수:</strong> {renderCount}회
         </div>
-
-        <div style={{ display: "none" }}>렌더링 횟수 영역</div>
-      </div>
-    </div>
-  );
-}
-
-export default function StudySummary({ summary }) {
-  /* ========================================================
-   * [미션 3 연동 포인트]
-   * 부모 컴포넌트에서 매번 불필요하게 재계산되지 않도록 
-   * useMemo로 감싸 둔 고효율 통계 데이터 객체(summary)를 구조 분해 할당합니다.
-   * ======================================================== */
-  const { total = 0, visible = 0, favorite = 0 } = summary || {};
-
-  return (
-    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-      <div
-        style={{
-          backgroundColor: "#f8fafc",
-          padding: "12px 20px",
-          borderRadius: "8px",
-          fontSize: "13px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          color: "#334155",
-          border: "1px solid #f1f5f9",
-        }}
-      >
-        {/* 부모의 useMemo가 가지고 있던 종속성(의존성) 배열이 바뀔 때만 이 수치들이 최신화됩니다. */}
-        <div>
-          <strong>전체 항목:</strong> {total}개
-        </div>
-
-        <div>
-          <strong>현재 표시:</strong> {visible}개
-        </div>
-
-        <div>
-          <strong>즐겨찾기:</strong> {favorite}개
-        </div>
-
-        {/* 미션 3 이외의 영역(미션 6 렌더링 횟수 등)은 숨김 처리합니다. */}
-        <div style={{ display: "none" }}>렌더링 횟수</div>
       </div>
     </div>
   );
