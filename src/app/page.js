@@ -115,3 +115,67 @@ export default function Page() {
     </div>
   );
 }
+
+export default function Page() {
+  const [items] = useState(initialData);
+  const [keyword] = useState("");
+  const [category] = useState("all");
+  const [level] = useState("all");
+  const [favoriteOnly] = useState(false);
+  const [favoriteIds] = useState([]);
+  const [isMounted] = useState(false);
+
+  /* ==========================================
+   * [미션 3] useMemo로 필터링 결과 계산하기
+   * ========================================== */
+  // 요구사항: 변수명 filteredData, 대소문자 구분 없는 검색어/카테고리/즐겨찾기 조건 반영 및 올바른 의존성 배열 작성
+  const filteredData = useMemo(() => {
+    return items.filter(item => {
+      // 1. 조건: 제목에 검색어가 포함되어야 함 (대소문자 관계없이 처리)
+      const matchesSearch = item.title.toLowerCase().includes(keyword.toLowerCase()); 
+      
+      // 2. 조건: 선택한 카테고리와 일치해야 함 (전체, concept, library, hook)
+      const matchesCategory = category === "all" || item.category === category; 
+      
+      // 추가 조건 (난이도 필터링 필요 시)
+      const matchesLevel = level === "all" || item.level === level;
+      
+      // 3. 조건: favoriteOnly가 true라면 즐겨찾기 항목(favoriteIds에 포함된 항목)만 출력
+      const matchesFavorite = !favoriteOnly || favoriteIds.includes(item.id); 
+      
+      return matchesSearch && matchesCategory && matchesLevel && matchesFavorite;
+    });
+    // 4. 의존성 배열: 필터링 조건에 영향을 주는 상태들을 빠짐없이 작성
+  }, [items, keyword, category, level, favoriteOnly, favoriteIds]); 
+
+  // 추가 요구사항: useMemo를 한 번 더 사용하여 현재 화면의 통계 정보 계산
+  const summary = useMemo(() => {
+    return { 
+      total: items.length,          // 전체 항목 개수
+      visible: filteredData.length, // 현재 표시 개수
+      favorite: favoriteIds.length  // 즐겨찾기 개수
+    };
+    // 의존성 배열: filteredData와 favoriteIds가 변경될 때마다 통계를 다시 계산
+  }, [items, filteredData, favoriteIds]); 
+
+  return (
+    <div className={styles.container}>
+      {/* 
+        5. 요구사항: 화면에 다음 정보 출력
+        - 전체 항목: {summary.total}개 / 현재 표시: {summary.visible}개 / 즐겨찾기: {summary.favorite}개 
+      */}
+      <StudySummary summary={summary} renderCount={isMounted ? 0 : 0} />
+
+      <h3 className={styles.listTitle}>학습 목록</h3>
+      {filteredData.length === 0 ? (
+        <p className={styles.noData}>조건에 맞는 학습 항목이 없습니다.</p>
+      ) : (
+        /* 6. 계산된 filteredData 배열을 목록 컴포넌트에 주입 */
+        <StudyList
+          filteredItems={filteredData}
+          favoriteIds={favoriteIds}
+        />
+      )}
+    </div>
+  );
+}
