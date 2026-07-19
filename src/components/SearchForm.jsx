@@ -7,11 +7,7 @@ import { forwardRef } from "react";
 export default forwardRef(function SearchForm({ keyword, setKeyword, onReset }, ref) {
   return (
     <div style={{ display: "flex", gap: "8px", marginBottom: "15px" }}>
-      {/* 
-        [미션 1 요구사항]
-        - value를 부모의 keyword 상태와 동기화합니다.
-        - 검색창의 입력값이 변경되면 onChange 이벤트를 통해 setKeyword를 실행하여 업데이트합니다.
-      */}
+
       <input
         type="text"
         placeholder="학습 항목 검색"
@@ -30,6 +26,38 @@ export default forwardRef(function SearchForm({ keyword, setKeyword, onReset }, 
       {/* 미션 1 관점에서는 제외되거나 보조적인 버튼들입니다. */}
       <button style={{ display: "none" }}>검색창으로 이동</button>
       <button style={{ display: "none" }}>초기화</button>
+    </div>
+  );
+});
+
+"use client";
+
+import { forwardRef } from "react";
+
+export default forwardRef(function SearchForm({ keyword, setKeyword, onReset }, ref) {
+  
+  return (
+    <div style={{ display: "flex", gap: "8px", marginBottom: "15px" }}>
+      {/* 미션 2와 직접 매칭되는 input 및 이동 버튼은 숨김 처리합니다. */}
+      <input type="text" style={{ display: "none" }} />
+      <button style={{ display: "none" }}>검색창으로 이동</button>
+
+
+      <button
+        onClick={onReset} // 부모의 초기화 함수 호출 (내부에서 setFavoriteOnly(false) 수행)
+        style={{
+          padding: "0 14px",
+          backgroundColor: "#fff",
+          border: "1px solid #cbd5e1",
+          borderRadius: "6px",
+          cursor: "pointer",
+          fontSize: "13px",
+          color: "#334155",
+          whiteSpace: "nowrap",
+        }}
+      >
+        초기화
+      </button>
     </div>
   );
 });
