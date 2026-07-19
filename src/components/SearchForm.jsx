@@ -61,3 +61,39 @@ export default forwardRef(function SearchForm({ keyword, setKeyword, onReset }, 
     </div>
   );
 });
+
+"use client";
+
+import { forwardRef } from "react";
+
+export default forwardRef(function SearchForm({ keyword, setKeyword, onReset }, ref) {
+  
+  return (
+    <div style={{ display: "flex", gap: "8px", marginBottom: "15px" }}>
+      {/* 
+        [미션 3 연동 포인트]
+        - 이 input에 입력되는 keyword 값은 부모 컴포넌트의 useMemo 의존성 배열에 들어갑니다.
+        - 여기서 글자를 타이핑할 때마다 부모의 데이터가 아래 조건으로 필터링됩니다:
+          item.title.toLowerCase().includes(keyword.toLowerCase())
+      */}
+      <input
+        type="text"
+        placeholder="학습 항목 검색"
+        value={keyword} // 미션 3 useMemo의 핵심 판단 기준이 되는 상태값
+        onChange={e => setKeyword(e.target.value)}
+        style={{
+          flex: 1,
+          padding: "10px 12px",
+          boxSizing: "border-box",
+          borderRadius: "6px",
+          border: "1px solid #cbd5e1",
+          fontSize: "14px",
+        }}
+      />
+
+      {/* 미션 3 연산과는 직접적인 관련이 없는 요소들입니다. */}
+      <button style={{ display: "none" }}>검색창으로 이동</button>
+      <button style={{ display: "none" }}>초기화</button>
+    </div>
+  );
+});
