@@ -49,3 +49,33 @@ export default function StudyList({ filteredItems, favoriteIds, onToggleFavorite
     </ul>
   );
 }
+
+export default function StudyList({ filteredItems, favoriteIds, onToggleFavorite }) {
+  
+  // 미션 3에서 필터나 검색어로 걸러진 결과, 보여줄 항목이 하나도 없다면 안내 문구를 띄웁니다.
+  if (!filteredItems || filteredItems.length === 0) {
+    return (
+      <p style={{ color: "#94a3b8", textAlign: "center", padding: "30px", fontSize: "14px" }}>
+        일치하는 항목이 없습니다.
+      </p>
+    );
+  }
+
+  return (
+    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      {/* 
+        [미션 3 최종 결과 바인딩]
+        부모 컴포넌트의 useMemo가 연산해준 '최종 생존 데이터 배열'만 가지고 
+        화면에 리스트를 안전하게 그려냅니다.
+      */}
+      {filteredItems.map(item => (
+        <StudyItem
+          key={item.id}
+          item={item}
+          isFavorite={favoriteIds.includes(item.id)}
+          onToggleFavorite={onToggleFavorite}
+        />
+      ))}
+    </ul>
+  );
+}
