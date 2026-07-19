@@ -40,3 +40,40 @@ export default function StudySummary({ summary }) {
     </div>
   );
 }
+
+export default function StudySummary({ summary }) {
+
+  const { favorite = 0 } = summary || {};
+
+  return (
+    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+      <div
+        style={{
+          backgroundColor: "#f8fafc",
+          padding: "12px 20px",
+          borderRadius: "8px",
+          fontSize: "13px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          color: "#334155",
+          border: "1px solid #f1f5f9",
+        }}
+      >
+        {/* 미션 2 이외의 기본 정보는 생략하거나 숨김 처리합니다. */}
+        <div style={{ display: "none" }}>전체 및 현재 표시 항목</div>
+
+        {/* 
+          [미션 2 핵심 UI]
+          - 사용자가 각 아이템의 '☆ 즐겨찾기' 버튼을 누를 때마다 
+            실시간으로 카운트가 변하는 것을 보여주는 종착지입니다.
+        */}
+        <div>
+          <strong>즐겨찾기:</strong> {favorite}개
+        </div>
+
+        <div style={{ display: "none" }}>렌더링 횟수 영역</div>
+      </div>
+    </div>
+  );
+}
