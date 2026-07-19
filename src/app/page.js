@@ -60,3 +60,58 @@ export default function Page() {
     </div>
   );
 }
+
+"use client";
+
+import { useState, useCallback } from "react";
+import initialData from "@/data/data.json";
+import CategoryFilter from "@/components/CategoryFilter";
+import StudyList from "@/components/StudyList";
+import styles from "./page.module.css";
+
+export default function Page() {
+  const [items] = useState(initialData);
+
+
+  // 1. 요구사항: favoriteIds 상태 생성 (초기값: 빈 배열)
+  const [favoriteIds, setFavoriteIds] = useState([]); 
+  
+  // 2. 추가 요구사항: favoriteOnly 상태 생성 (초기값: false)
+  const [favoriteOnly, setFavoriteOnly] = useState(false); 
+
+  /* (미션 4의 함수이지만 미션 2의 '즐겨찾기 토글 기능'을 수행하는 핵심 로직입니다) */
+  const handleToggleFavorite = useCallback(id => {
+    // 요구사항: 이미 즐겨찾기된 항목은 제거, 아니면 배열에 추가
+    setFavoriteIds(prev =>
+      prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id],
+    );
+  }, []);
+
+  return (
+    <div className={styles.container}>
+      
+      <h3 className={styles.sectionTitle}>카테고리 필터</h3>
+      {/* 
+        3. 추가 요구사항 반영을 위한 컴포넌트 
+        - 내부에서 favoriteOnly 값에 따라 "즐겨찾기만 보기" / "전체 항목 보기" 문구를 제어합니다.
+      */}
+      <CategoryFilter
+        favoriteOnly={favoriteOnly}
+        setFavoriteOnly={setFavoriteOnly}
+        // (기존 미션 1용 category Props들은 생략 가능)
+      />
+
+      <h3 className={styles.listTitle}>학습 목록</h3>
+      {/* 
+        4. 요구사항: 각 학습 항목에 즐겨찾기 버튼을 추가하고 상태 전달 
+        - favoriteIds 배열과 즐겨찾기 토글 함수를 하위 컴포넌트로 위임합니다.
+      */}
+      <StudyList
+        filteredItems={items} // 미션 3 필터링 이전의 기본 데이터 바인딩 예시
+        favoriteIds={favoriteIds}
+        onToggleFavorite={handleToggleFavorite}
+      />
+      
+    </div>
+  );
+}
