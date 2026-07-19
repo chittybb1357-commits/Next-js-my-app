@@ -29,3 +29,23 @@ export default function StudyList({ filteredItems, favoriteIds, onToggleFavorite
     </ul>
   );
 }
+
+export default function StudyList({ filteredItems, favoriteIds, onToggleFavorite }) {
+  
+  // 데이터가 없을 때의 예외 처리는 흐름상 유지합니다.
+  if (!filteredItems || filteredItems.length === 0) return null;
+
+  return (
+    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      {filteredItems.map(item => (
+        <StudyItem
+          key={item.id}
+          item={item}
+
+          isFavorite={favoriteIds.includes(item.id)} // 현재 항목이 즐겨찾기 상태인지 판별
+          onToggleFavorite={onToggleFavorite}         // 즐겨찾기 변경 핸들러 전달
+        />
+      ))}
+    </ul>
+  );
+}
