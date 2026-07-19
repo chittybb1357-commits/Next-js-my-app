@@ -61,3 +61,58 @@ export default function CategoryFilter({ favoriteOnly, setFavoriteOnly }) {
     </div>
   );
 }
+
+"use client";
+
+export default function CategoryFilter({ category, setCategory, favoriteOnly, setFavoriteOnly }) {
+  const categories = [
+    { value: "all", label: "전체" },
+    { value: "concept", label: "concept" },
+    { value: "library", label: "library" },
+    { value: "hook", label: "hook" },
+  ];
+
+  return (
+    <div style={{ marginBottom: "20px" }}>
+      {/* 1. useMemo(filteredData)의 '카테고리 조건'을 트리거하는 버튼들 */}
+      <div style={{ display: "flex", gap: "5px", marginBottom: "15px" }}>
+        {categories.map(cat => (
+          <button
+            key={cat.value}
+            // 여기서 상태가 변경되면 부모의 useMemo가 실시간으로 재계산됩니다.
+            onClick={() => setCategory(cat.value)}
+            style={{
+              padding: "8px 12px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+              cursor: "pointer",
+              backgroundColor: category === cat.value ? "#0070f3" : "#fff",
+              color: category === cat.value ? "#fff" : "#000",
+              fontWeight: category === cat.value ? "bold" : "normal",
+            }}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 2. useMemo(filteredData)의 '즐겨찾기 조건(favoriteOnly)'을 트리거하는 버튼 */}
+      <button
+        // 여기서 true/false가 반전되면 부모의 useMemo 필터링이 실시간으로 재계산됩니다.
+        onClick={() => setFavoriteOnly(prev => !prev)}
+        style={{
+          width: "100%",
+          padding: "10px",
+          borderRadius: "4px",
+          border: "1px solid #0070f3",
+          cursor: "pointer",
+          backgroundColor: favoriteOnly ? "#e6f4ff" : "#fff",
+          color: "#0070f3",
+          fontWeight: "bold",
+        }}
+      >
+        {favoriteOnly ? "전체 항목 보기" : "즐겨찾기만 보기"}
+      </button>
+    </div>
+  );
+}
